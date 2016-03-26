@@ -46,7 +46,9 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
-          <Grid/>
+          <Grid>
+            <ListBox Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding History}"/>
+          </Grid>
           <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center"/>
           <Grid Grid.Column="2"/>
         </Grid>
