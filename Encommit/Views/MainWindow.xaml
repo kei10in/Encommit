@@ -1,41 +1,56 @@
-﻿<Window x:Class="Encommit.Views.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:is="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Encommit.Views"
+        xmlns:ViewModels="clr-namespace:Encommit.ViewModels" 
+        xmlns:Interactivity="clr-namespace:Encommit.Interactivity" x:Class="Encommit.Views.MainWindow" 
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Menu VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit"/>
-            </MenuItem>
-        </Menu>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid/>
-            <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center" />
-            <Grid Grid.Column="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid/>
-                    <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center"/>
-                    <Grid Grid.Column="2"/>
-                </Grid>
-            </Grid>
+  <Window.Resources>
+    <ViewModels:MainViewModel x:Key="MainViewModelDataSource" d:IsDataSource="True"/>
+  </Window.Resources>
+  <Grid DataContext="{Binding Source={StaticResource MainViewModelDataSource}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Menu VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment">
+      <MenuItem Header="File">
+        <MenuItem Header="Open...">
+          <is:Interaction.Triggers>
+            <is:EventTrigger EventName="Click">
+              <Interactivity:FileDialogAction IsFolderPicker="True" FilePath="{Binding RepositoryPath, Mode=TwoWay}" />
+            </is:EventTrigger>
+          </is:Interaction.Triggers>
+        </MenuItem>
+        <Separator/>
+        <MenuItem Header="Exit"/>
+      </MenuItem>
+    </Menu>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid/>
+      <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center" />
+      <Grid Grid.Column="2">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <Grid/>
+          <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center"/>
+          <Grid Grid.Column="2"/>
         </Grid>
+      </Grid>
     </Grid>
+  </Grid>
 </Window>
