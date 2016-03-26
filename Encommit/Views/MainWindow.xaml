@@ -12,6 +12,11 @@
         Title="MainWindow" Height="960" Width="1600">
   <Window.Resources>
     <ViewModels:MainViewModel x:Key="MainViewModelDataSource" d:IsDataSource="True"/>
+    <DataTemplate x:Key="HistoryItemTemplate">
+      <Grid>
+        <TextBlock TextWrapping="Wrap" Text="{Binding MessageShort}"/>
+      </Grid>
+    </DataTemplate>
   </Window.Resources>
   <Grid DataContext="{Binding Source={StaticResource MainViewModelDataSource}}">
     <Grid.RowDefinitions>
@@ -47,7 +52,7 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           <Grid>
-            <ListBox Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding History}"/>
+            <ListBox Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding History}" ItemTemplate="{DynamicResource HistoryItemTemplate}"/>
           </Grid>
           <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center"/>
           <Grid Grid.Column="2"/>

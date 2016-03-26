@@ -18,15 +18,15 @@ namespace Encommit.Models
 
         public string Path { get; set; }
 
-        public IObservable<string> GetHistoryReactive()
+        public IObservable<HistoryItem> GetHistoryReactive()
         {
-            return Observable.Create<string>(observer =>
+            return Observable.Create<HistoryItem>(observer =>
             {
                 using (var repo = new Repository(Path))
                 {
                     foreach (var commit in repo.Commits.Take(10))
                     {
-                        observer.OnNext(commit.MessageShort);
+                        observer.OnNext(new HistoryItem(commit.MessageShort));
                     }
                 }
                 observer.OnCompleted();

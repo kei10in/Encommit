@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Interactivity\CommonFileDialogAction.cs" />
     <Compile Include="Models\GitRepository.cs" />
+    <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReactiveProperty.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

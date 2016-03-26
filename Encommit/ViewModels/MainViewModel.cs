@@ -22,7 +22,7 @@ namespace Encommit.ViewModels
                 .Where(repository => repository != null)
                 .SelectMany(repository => repository.GetHistoryReactive())
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(commit => History.Add(commit));
+                .Subscribe(historyItem => History.Add(historyItem));
         }
 
         private string _repositoryPath;
@@ -39,8 +39,8 @@ namespace Encommit.ViewModels
             set { this.RaiseAndSetIfChanged(ref _workingRepository, value); }
         }
 
-        private ObservableCollection<string> _history = new ObservableCollection<string>();
-        public ObservableCollection<string> History
+        private ObservableCollection<HistoryItem> _history = new ObservableCollection<HistoryItem>();
+        public ObservableCollection<HistoryItem> History
         {
             get { return _history; }
             set { this.RaiseAndSetIfChanged(ref _history, value); }
