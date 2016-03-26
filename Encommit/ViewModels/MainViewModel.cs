@@ -20,7 +20,7 @@ namespace Encommit.ViewModels
 
             this.WhenAnyValue(x => x.WorkingRespository)
                 .Where(repository => repository != null)
-                .SelectMany(repository => repository.GetHistory())
+                .SelectMany(repository => repository.GetHistoryReactive())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(commit => History.Add(commit));
         }

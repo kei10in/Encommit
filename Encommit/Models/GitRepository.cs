@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -17,10 +18,21 @@ namespace Encommit.Models
 
         public string Path { get; set; }
 
-        public IObservable<string> GetHistory()
+        public IObservable<string> GetHistoryReactive()
         {
-            var r = new List<string> { "foo", "bar", "buz" };
-            return r.ToObservable();
+            return Observable.Create<string>(observer =>
+            {
+                using (var repo = new Repository(Path))
+                {
+                    foreach (var commit in repo.Commits.Take(10))
+                    {
+                        observer.OnNext(commit.MessageShort);
+                    }
+                }
+                observer.OnCompleted();
+
+                return () => { };
+            });
         }
     }
 }
