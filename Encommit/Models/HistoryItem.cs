@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,13 @@ namespace Encommit.Models
 {
     public class HistoryItem
     {
-        public HistoryItem(string messageShort)
+        public HistoryItem(ObjectId id, string messageShort)
         {
+            Id = id;
             MessageShort = messageShort;
         }
+
+        public ObjectId Id { get; }
 
         public string MessageShort { get; }
     }

@@ -23,6 +23,9 @@ namespace Encommit.ViewModels
                 .SelectMany(repository => repository.GetHistoryReactive())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(historyItem => History.Add(historyItem));
+
+            this.WhenAnyValue(x => x.SelectedHistoryItem)
+                .Subscribe(selected => LoadCommitAbstract(selected));
         }
 
         private string _repositoryPath;
@@ -46,9 +49,31 @@ namespace Encommit.ViewModels
             set { this.RaiseAndSetIfChanged(ref _history, value); }
         }
 
+        private HistoryItem _selectedHistoryItem;
+        public HistoryItem SelectedHistoryItem
+        {
+            get { return _selectedHistoryItem; }
+            set { this.RaiseAndSetIfChanged(ref _selectedHistoryItem, value); }
+        }
+
+        private CommitAbstractViewModel _abstract;
+        public CommitAbstractViewModel Abstract
+        {
+            get { return _abstract; }
+            set { this.RaiseAndSetIfChanged(ref _abstract, value); }
+        }
+
         private void Load()
         {
             WorkingRespository = new GitRepository(_repositoryPath);
+        }
+
+        private void LoadCommitAbstract(HistoryItem item)
+        {
+            if (item == null) return;
+            WorkingRespository.GetCommitAbstractReactive(item.Id)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x => Abstract = new CommitAbstractViewModel(x));
         }
     }
 }

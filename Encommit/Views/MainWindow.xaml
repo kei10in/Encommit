@@ -1,4 +1,4 @@
-﻿<Window
+﻿<Window x:Class="Encommit.Views.MainWindow" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:is="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Encommit.Views"
         xmlns:ViewModels="clr-namespace:Encommit.ViewModels" 
-        xmlns:Interactivity="clr-namespace:Encommit.Interactivity" x:Class="Encommit.Views.MainWindow" 
+        xmlns:Interactivity="clr-namespace:Encommit.Interactivity"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1600">
   <Window.Resources>
@@ -52,10 +52,46 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           <Grid>
-            <ListBox Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding History}" ItemTemplate="{DynamicResource HistoryItemTemplate}"/>
+            <ListBox Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding History}" ItemTemplate="{DynamicResource HistoryItemTemplate}" SelectedItem="{Binding SelectedHistoryItem}"/>
           </Grid>
           <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center"/>
-          <Grid Grid.Column="2"/>
+          <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Commit:" Focusable="True" HorizontalAlignment="Right"/>
+              <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Abstract.Commit, Mode=OneWay}" IsReadOnly="True" Background="{x:Null}" BorderThickness="0"/>
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Author:" HorizontalAlignment="Right"/>
+              <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Abstract.Author, Mode=OneWay}" IsReadOnly="True" Background="{x:Null}" BorderThickness="0"/>
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Committer:" HorizontalAlignment="Right"/>
+              <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Abstract.Committer, Mode=OneWay}" IsReadOnly="True" Background="{x:Null}" BorderThickness="0"/>
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="Parents:" HorizontalAlignment="Right"/>
+              <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Abstract.Parents, Mode=OneWay}" IsReadOnly="True" Background="{x:Null}" BorderThickness="0"/>
+              <TextBox Grid.Row="4" Grid.Column="1" Background="{x:Null}" BorderThickness="0" Text="{Binding Abstract.Message, Mode=OneWay}"/>
+            </Grid>
+            <GridSplitter Grid.Row="1" Height="7" BorderThickness="0,3" Margin="0,-3" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <Grid Grid.Row="2">
+            </Grid>
+            <GridSplitter Grid.Row="3" Height="7" BorderThickness="0,3" Margin="0,-3" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <Grid Grid.Row="4">
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
