@@ -26,6 +26,9 @@ namespace Encommit.ViewModels
 
             this.WhenAnyValue(x => x.SelectedHistoryItem)
                 .Subscribe(selected => LoadCommitAbstract(selected));
+
+            this.WhenAnyValue(x => x.SelectedHistoryItem)
+                .Subscribe(selected => LoadTreeChanges(selected));
         }
 
         private string _repositoryPath;
@@ -63,6 +66,13 @@ namespace Encommit.ViewModels
             set { this.RaiseAndSetIfChanged(ref _abstract, value); }
         }
 
+        private ObservableCollection<string> _changes;
+        public ObservableCollection<string> Changes
+        {
+            get { return _changes; }
+            set { this.RaiseAndSetIfChanged(ref _changes, value); }
+        }
+
         private void Load()
         {
             WorkingRespository = new GitRepository(_repositoryPath);
@@ -74,6 +84,16 @@ namespace Encommit.ViewModels
             WorkingRespository.GetCommitAbstractReactive(item.Id)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x => Abstract = new CommitAbstractViewModel(x));
+        }
+
+        private void LoadTreeChanges(HistoryItem item)
+        {
+            if (item == null) return;
+            Changes = new ObservableCollection<string>();
+            WorkingRespository.GetTreeChangesReactive(item.Id)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .SelectMany(x => x)
+                .Subscribe(x => Changes.Add(x.Path));
         }
     }
 }

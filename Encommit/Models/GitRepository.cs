@@ -60,5 +60,25 @@ namespace Encommit.Models
                 return Disposable.Empty;
             });
         }
+
+        public IObservable<TreeChanges> GetTreeChangesReactive(ObjectId id)
+        {
+            return Observable.Create<TreeChanges>(observer =>
+            {
+                using (var repo = new Repository(Path))
+                {
+                    GitObject obj = repo.Lookup(id);
+                    Commit commit = obj as Commit;
+                    if (commit != null)
+                    {
+                        var oldTree = commit.Parents.FirstOrDefault()?.Tree;
+                        var newTree = commit.Tree;
+                        var changes = repo.Diff.Compare<TreeChanges>(oldTree, newTree);
+                        observer.OnNext(repo.Diff.Compare<TreeChanges>(oldTree, newTree));
+                    }
+                }
+                return Disposable.Empty;
+            });
+        }
     }
 }
