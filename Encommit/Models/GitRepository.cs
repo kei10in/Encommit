@@ -38,23 +38,15 @@ namespace Encommit.Models
 
         public IObservable<CommitAbstract> GetCommitAbstractReactive(ObjectId id)
         {
-            return Observable.Create<CommitAbstract>(observer =>
+            return WithCommit<CommitAbstract>(id, (repo, commit, observer) =>
             {
-                using (var repo = new Repository(Path))
-                {
-                    GitObject obj = repo.Lookup(id);
-                    Commit commit = obj as Commit;
-                    if (commit != null)
-                    {
-                        observer.OnNext(
-                            new CommitAbstract(
-                                commit.Sha,
-                                commit.Author,
-                                commit.Committer,
-                                commit.Parents.Select(x => x.Sha).ToList(),
-                                commit.Message));
-                    }
-                }
+                observer.OnNext(
+                    new CommitAbstract(
+                        commit.Sha,
+                        commit.Author,
+                        commit.Committer,
+                        commit.Parents.Select(x => x.Sha).ToList(),
+                        commit.Message));
                 observer.OnCompleted();
 
                 return Disposable.Empty;
@@ -63,7 +55,22 @@ namespace Encommit.Models
 
         public IObservable<TreeChanges> GetTreeChangesReactive(ObjectId id)
         {
-            return Observable.Create<TreeChanges>(observer =>
+            return WithCommit<TreeChanges>(id, (repo, commit, observer) =>
+            {
+                var oldTree = commit.Parents.FirstOrDefault()?.Tree;
+                var newTree = commit.Tree;
+                var changes = repo.Diff.Compare<TreeChanges>(oldTree, newTree);
+                observer.OnNext(repo.Diff.Compare<TreeChanges>(oldTree, newTree));
+                observer.OnCompleted();
+
+                return Disposable.Empty;
+            });
+        }
+
+        private IObservable<T> WithCommit<T>(
+            ObjectId id, Func<Repository, Commit, IObserver<T>, IDisposable> subscribe)
+        {
+            return Observable.Create<T>(observer =>
             {
                 using (var repo = new Repository(Path))
                 {
@@ -71,10 +78,7 @@ namespace Encommit.Models
                     Commit commit = obj as Commit;
                     if (commit != null)
                     {
-                        var oldTree = commit.Parents.FirstOrDefault()?.Tree;
-                        var newTree = commit.Tree;
-                        var changes = repo.Diff.Compare<TreeChanges>(oldTree, newTree);
-                        observer.OnNext(repo.Diff.Compare<TreeChanges>(oldTree, newTree));
+                        return subscribe(repo, commit, observer);
                     }
                 }
                 return Disposable.Empty;
