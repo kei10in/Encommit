@@ -60,7 +60,7 @@ namespace Encommit.Models
                 var oldTree = commit.Parents.FirstOrDefault()?.Tree;
                 var newTree = commit.Tree;
                 var changes = repo.Diff.Compare<TreeChanges>(oldTree, newTree);
-                observer.OnNext(repo.Diff.Compare<TreeChanges>(oldTree, newTree));
+                observer.OnNext(changes);
                 observer.OnCompleted();
 
                 return Disposable.Empty;
