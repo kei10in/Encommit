@@ -1,4 +1,4 @@
-﻿<Window x:Class="Encommit.Views.MainWindow" 
+﻿<Window x:Class="Encommit.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:Encommit.Views"
         xmlns:ViewModels="clr-namespace:Encommit.ViewModels" 
         xmlns:Interactivity="clr-namespace:Encommit.Interactivity"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1600">
   <Window.Resources>
@@ -61,7 +62,7 @@
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="96"/>
               <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid>
               <Grid.RowDefinitions>
@@ -87,10 +88,11 @@
             </Grid>
             <GridSplitter Grid.Row="1" Height="7" BorderThickness="0,3" Margin="0,-3" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             <Grid Grid.Row="2">
-              <ListBox x:Name="listBox" Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding Changes}"/>
+              <ListBox x:Name="listBox" Style="{DynamicResource SimpleListBox}" ItemsSource="{Binding Changes}" SelectedItem="{Binding SelectedChange}"/>
             </Grid>
             <GridSplitter Grid.Row="3" Height="7" BorderThickness="0,3" Margin="0,-3" BorderBrush="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             <Grid Grid.Row="4">
+              <avalonedit:TextEditor Document="{Binding FilePatch}" IsReadOnly="True"/>
             </Grid>
           </Grid>
         </Grid>

@@ -67,6 +67,20 @@ namespace Encommit.Models
             });
         }
 
+        public IObservable<Patch> GetPatchReactive(ObjectId id, string path)
+        {
+            return WithCommit<Patch>(id, (repo, commit, observer) =>
+            {
+                var oldTree = commit.Parents.FirstOrDefault()?.Tree;
+                var newTree = commit.Tree;
+                var patch = repo.Diff.Compare<Patch>(oldTree, newTree, new List<string> { path });
+                observer.OnNext(patch);
+                observer.OnCompleted();
+
+                return Disposable.Empty;
+            });
+        }
+
         private IObservable<T> WithCommit<T>(
             ObjectId id, Func<Repository, Commit, IObserver<T>, IDisposable> subscribe)
         {

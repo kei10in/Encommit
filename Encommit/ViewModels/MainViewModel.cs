@@ -1,4 +1,5 @@
 ﻿using Encommit.Models;
+using ICSharpCode.AvalonEdit.Document;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ namespace Encommit.ViewModels
 
             this.WhenAnyValue(x => x.SelectedHistoryItem)
                 .Subscribe(selected => LoadTreeChanges(selected));
+
+            this.WhenAnyValue(x => x.SelectedChange)
+                .Subscribe(selected => LoadFilePatch(selected));
         }
 
         private string _repositoryPath;
@@ -73,6 +77,20 @@ namespace Encommit.ViewModels
             set { this.RaiseAndSetIfChanged(ref _changes, value); }
         }
 
+        private string _selectedChange;
+        public string SelectedChange
+        {
+            get { return _selectedChange; }
+            set { this.RaiseAndSetIfChanged(ref _selectedChange, value); }
+        }
+
+        private TextDocument _filePatch;
+        public TextDocument FilePatch
+        {
+            get { return _filePatch; }
+            set { this.RaiseAndSetIfChanged(ref _filePatch, value); }
+        }
+
         private void Load()
         {
             WorkingRespository = new GitRepository(_repositoryPath);
@@ -94,6 +112,14 @@ namespace Encommit.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .SelectMany(x => x)
                 .Subscribe(x => Changes.Add(x.Path));
+        }
+
+        private void LoadFilePatch(string filepath)
+        {
+            if (filepath == null) return;
+            WorkingRespository.GetPatchReactive(SelectedHistoryItem.Id, filepath)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x => FilePatch = new TextDocument(x.Content));
         }
     }
 }
