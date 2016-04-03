@@ -19,6 +19,25 @@ namespace Encommit.Models
 
         public string Path { get; set; }
 
+        public IObservable<Branch> GetLocalBranchesReactive()
+        {
+            return Observable.Create<Branch>(observer =>
+            {
+                using (var repo = new Repository(Path))
+                {
+                    foreach (var branch in repo.Branches)
+                    {
+                        if (branch.IsRemote) continue;
+
+                        observer.OnNext(new Branch(branch.FriendlyName));
+                    }
+                }
+                observer.OnCompleted();
+
+                return Disposable.Empty;
+            });
+        }
+
         public IObservable<HistoryItem> GetHistoryReactive()
         {
             return Observable.Create<HistoryItem>(observer =>

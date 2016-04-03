@@ -121,9 +121,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interactivity\CommonFileDialogAction.cs" />
+    <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\CommitAbstract.cs" />
     <Compile Include="Models\GitRepository.cs" />
     <Compile Include="Models\HistoryItem.cs" />
+    <Compile Include="ViewModels\BranchesTreeViewModel.cs" />
     <Compile Include="ViewModels\CommitAbstractViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReactiveProperty.cs" />

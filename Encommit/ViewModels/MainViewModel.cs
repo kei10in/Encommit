@@ -19,11 +19,18 @@ namespace Encommit.ViewModels
                 .Where(path => path != null)
                 .Subscribe(_ => Load());
 
-            this.WhenAnyValue(x => x.WorkingRespository)
-                .Where(repository => repository != null)
+            var repositoryLoaded = this.WhenAnyValue(x => x.WorkingRespository)
+                .Where(repository => repository != null);
+
+            repositoryLoaded
                 .SelectMany(repository => repository.GetHistoryReactive())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(historyItem => History.Add(historyItem));
+
+            repositoryLoaded
+                .SelectMany(repository => repository.GetLocalBranchesReactive())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(branch => LocalBranches.Add(branch.Name));
 
             this.WhenAnyValue(x => x.SelectedHistoryItem)
                 .Subscribe(selected => LoadCommitAbstract(selected));
@@ -47,6 +54,13 @@ namespace Encommit.ViewModels
         {
             get { return _workingRepository; }
             set { this.RaiseAndSetIfChanged(ref _workingRepository, value); }
+        }
+
+        private BranchesTreeViewModel _localBranches = new BranchesTreeViewModel();
+        public BranchesTreeViewModel LocalBranches
+        {
+            get { return _localBranches; }
+            set { this.RaiseAndSetIfChanged(ref _localBranches, value); }
         }
 
         private ObservableCollection<HistoryItem> _history = new ObservableCollection<HistoryItem>();
