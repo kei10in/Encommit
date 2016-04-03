@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:is="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Encommit.Views"
-        xmlns:ViewModels="clr-namespace:Encommit.ViewModels" 
+        xmlns:ViewModels="clr-namespace:Encommit.ViewModels;assembly=Encommit.Core" 
         xmlns:Interactivity="clr-namespace:Encommit.Interactivity"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"

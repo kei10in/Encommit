@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encommit", "Encommit\Encommit.csproj", "{939F9105-9E85-4EAE-906E-57D2B51BE6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encommit.Core", "Encommit.Core\Encommit.Core.csproj", "{B3C5CAAE-B69C-42EC-AE3C-19A0008CE0CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{939F9105-9E85-4EAE-906E-57D2B51BE6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{939F9105-9E85-4EAE-906E-57D2B51BE6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{939F9105-9E85-4EAE-906E-57D2B51BE6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C5CAAE-B69C-42EC-AE3C-19A0008CE0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C5CAAE-B69C-42EC-AE3C-19A0008CE0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C5CAAE-B69C-42EC-AE3C-19A0008CE0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C5CAAE-B69C-42EC-AE3C-19A0008CE0CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
