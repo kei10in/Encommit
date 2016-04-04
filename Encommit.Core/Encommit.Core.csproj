@@ -89,7 +89,7 @@
     <Compile Include="Models\GitRepository.cs" />
     <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BranchesTreeViewModel.cs" />
+    <Compile Include="ViewModels\ReferencesTreeViewModel.cs" />
     <Compile Include="ViewModels\CommitAbstractViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReactiveProperty.cs" />

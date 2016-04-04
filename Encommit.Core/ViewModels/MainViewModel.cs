@@ -56,8 +56,8 @@ namespace Encommit.ViewModels
             set { this.RaiseAndSetIfChanged(ref _workingRepository, value); }
         }
 
-        private BranchesTreeViewModel _localBranches = new BranchesTreeViewModel();
-        public BranchesTreeViewModel LocalBranches
+        private ReferencesTreeViewModel _localBranches = new ReferencesTreeViewModel();
+        public ReferencesTreeViewModel LocalBranches
         {
             get { return _localBranches; }
             set { this.RaiseAndSetIfChanged(ref _localBranches, value); }

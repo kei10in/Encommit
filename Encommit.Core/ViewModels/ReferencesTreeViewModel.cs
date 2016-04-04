@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Encommit.ViewModels
 {
-    public class BranchesTreeViewModel
+    public class ReferencesTreeViewModel
     {
-        public BranchGroupViewModel Branches { get; } = new BranchGroupViewModel("", null);
+        public ReferenceGroupViewModel References { get; } = new ReferenceGroupViewModel("", null);
 
         public void Add(string branchName)
         {
@@ -21,10 +21,10 @@ namespace Encommit.ViewModels
             char[] delim = { '/' };
             var names = branchName.Split(delim);
 
-            Add(names, Branches);
+            Add(names, References);
         }
 
-        private void Add(IEnumerable<string> names, BranchGroupViewModel parent)
+        private void Add(IEnumerable<string> names, ReferenceGroupViewModel parent)
         {
             var name = names.First();
             var rest = names.Skip(1);
@@ -36,7 +36,7 @@ namespace Encommit.ViewModels
 
             if (hasRest && hasNode)
             {
-                var group = node as BranchGroupViewModel;
+                var group = node as ReferenceGroupViewModel;
                 if (group == null)
                 {
                     throw new InvalidOperationException($"{node.FullName} is already exist.");
@@ -45,7 +45,7 @@ namespace Encommit.ViewModels
             }
             else if (hasRest && !hasNode)
             {
-                var group = new BranchGroupViewModel(name, parent);
+                var group = new ReferenceGroupViewModel(name, parent);
                 Add(rest, group);
                 parent.Children.Add(group);
             }
@@ -55,26 +55,26 @@ namespace Encommit.ViewModels
             }
             else if (!hasRest && !hasNode)
             {
-                var branch = new BranchViewModel(name, parent);
+                var branch = new ReferenceViewModel(name, parent);
                 parent.Children.Add(branch);
             }
         }
     }
 
-    public interface IBranchEntryViewModel
+    public interface IReferenceEntryViewModel
     {
         string FullName { get; }
         string Name { get; }
     }
 
-    public class BranchEntryViewModel : IBranchEntryViewModel
+    public class ReferenceEntryViewModel : IReferenceEntryViewModel
     {
-        public BranchEntryViewModel(string name)
+        public ReferenceEntryViewModel(string name)
         {
             Name = name;
         }
 
-        public BranchEntryViewModel(string name, BranchGroupViewModel parent)
+        public ReferenceEntryViewModel(string name, ReferenceGroupViewModel parent)
         {
             Name = name;
             Parent = parent;
@@ -98,31 +98,31 @@ namespace Encommit.ViewModels
 
         public string Name { get; }
 
-        protected BranchGroupViewModel Parent { get; }
+        protected ReferenceGroupViewModel Parent { get; }
     }
 
-    public class BranchViewModel : BranchEntryViewModel
+    public class ReferenceViewModel : ReferenceEntryViewModel
     {
-        public BranchViewModel(string name)
+        public ReferenceViewModel(string name)
             : base(name)
         { }
 
-        public BranchViewModel(string name, BranchGroupViewModel parent)
+        public ReferenceViewModel(string name, ReferenceGroupViewModel parent)
             : base(name, parent)
         { }
     }
 
-    public class BranchGroupViewModel : BranchEntryViewModel
+    public class ReferenceGroupViewModel : ReferenceEntryViewModel
     {
-        public BranchGroupViewModel(string name)
+        public ReferenceGroupViewModel(string name)
             : base(name)
         { }
 
-        public BranchGroupViewModel(string name, BranchGroupViewModel parent)
+        public ReferenceGroupViewModel(string name, ReferenceGroupViewModel parent)
             : base(name, parent)
         { }
 
-        public ObservableCollection<IBranchEntryViewModel> Children { get; }
-            = new ObservableCollection<IBranchEntryViewModel>();
+        public ObservableCollection<IReferenceEntryViewModel> Children { get; }
+            = new ObservableCollection<IReferenceEntryViewModel>();
     }
 }

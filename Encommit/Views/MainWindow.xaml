@@ -46,12 +46,12 @@
       <Grid>
         <Expander Header="Branches" VerticalAlignment="Top" IsExpanded="True">
           <Grid>
-            <TreeView ItemsSource="{Binding LocalBranches.Branches.Children, Mode=OneWay}">
+            <TreeView ItemsSource="{Binding LocalBranches.References.Children, Mode=OneWay}">
               <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type ViewModels:BranchViewModel}">
+                <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
                   <TextBlock Text="{Binding Name}"/>
                 </HierarchicalDataTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type ViewModels:BranchGroupViewModel}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
                   <TextBlock Text="{Binding Name}"/>
                 </HierarchicalDataTemplate>
               </TreeView.Resources>
