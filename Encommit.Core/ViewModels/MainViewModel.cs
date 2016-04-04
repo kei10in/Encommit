@@ -32,6 +32,11 @@ namespace Encommit.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(branch => LocalBranches.Add(branch.Name));
 
+            repositoryLoaded
+                .SelectMany(repository => repository.GetTagsReactive())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(tag => Tags.Add(tag.Name));
+
             this.WhenAnyValue(x => x.SelectedHistoryItem)
                 .Subscribe(selected => LoadCommitAbstract(selected));
 
@@ -61,6 +66,13 @@ namespace Encommit.ViewModels
         {
             get { return _localBranches; }
             set { this.RaiseAndSetIfChanged(ref _localBranches, value); }
+        }
+
+        private ReferencesTreeViewModel _tags = new ReferencesTreeViewModel();
+        public ReferencesTreeViewModel Tags
+        {
+            get { return _tags; }
+            set { this.RaiseAndSetIfChanged(ref _tags, value); }
         }
 
         private ObservableCollection<HistoryItem> _history = new ObservableCollection<HistoryItem>();

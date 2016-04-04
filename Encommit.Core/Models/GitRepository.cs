@@ -38,6 +38,23 @@ namespace Encommit.Models
             });
         }
 
+        public IObservable<Tag> GetTagsReactive()
+        {
+            return Observable.Create<Tag>(observer =>
+            {
+                using (var repo = new Repository(Path))
+                {
+                    foreach (var tag in repo.Tags)
+                    {
+                        observer.OnNext(new Tag(tag.FriendlyName));
+                    }
+                }
+                observer.OnCompleted();
+
+                return Disposable.Empty;
+            });
+        }
+
         public IObservable<HistoryItem> GetHistoryReactive()
         {
             return Observable.Create<HistoryItem>(observer =>

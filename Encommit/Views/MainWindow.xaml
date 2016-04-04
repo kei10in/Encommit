@@ -44,20 +44,36 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Grid>
-        <Expander Header="Branches" VerticalAlignment="Top" IsExpanded="True">
-          <Grid>
-            <TreeView ItemsSource="{Binding LocalBranches.References.Children, Mode=OneWay}">
-              <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
-                  <TextBlock Text="{Binding Name}"/>
-                </HierarchicalDataTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
-                  <TextBlock Text="{Binding Name}"/>
-                </HierarchicalDataTemplate>
-              </TreeView.Resources>
-            </TreeView>
-          </Grid>
-        </Expander>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+          <Expander Header="Branches" IsExpanded="True" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition">
+            <Grid>
+              <TreeView ItemsSource="{Binding LocalBranches.References.Children, Mode=OneWay}">
+                <TreeView.Resources>
+                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
+                    <TextBlock Text="{Binding Name}"/>
+                  </HierarchicalDataTemplate>
+                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}"/>
+                  </HierarchicalDataTemplate>
+                </TreeView.Resources>
+              </TreeView>
+            </Grid>
+          </Expander>
+          <Expander Header="Tags" IsExpanded="True" d:LayoutOverrides="LeftPosition, RightPosition">
+            <Grid>
+              <TreeView ItemsSource="{Binding Tags.References.Children, Mode=OneWay}">
+                <TreeView.Resources>
+                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
+                    <TextBlock Text="{Binding Name}"/>
+                  </HierarchicalDataTemplate>
+                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}"/>
+                  </HierarchicalDataTemplate>
+                </TreeView.Resources>
+              </TreeView>
+            </Grid>
+          </Expander>
+        </StackPanel>
       </Grid>
       <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center" />
       <Grid Grid.Column="2">
