@@ -21,16 +21,13 @@ namespace Encommit.Models
 
         public IObservable<Branch> GetLocalBranchesReactive()
         {
-            return Observable.Create<Branch>(observer =>
+            return WithRepository<Branch>((repo, observer) =>
             {
-                using (var repo = new Repository(Path))
+                foreach (var branch in repo.Branches)
                 {
-                    foreach (var branch in repo.Branches)
-                    {
-                        if (branch.IsRemote) continue;
+                    if (branch.IsRemote) continue;
 
-                        observer.OnNext(new Branch(branch.FriendlyName));
-                    }
+                    observer.OnNext(new Branch(branch.FriendlyName));
                 }
                 observer.OnCompleted();
 
@@ -40,14 +37,11 @@ namespace Encommit.Models
 
         public IObservable<Tag> GetTagsReactive()
         {
-            return Observable.Create<Tag>(observer =>
+            return WithRepository<Tag>((repo, observer) =>
             {
-                using (var repo = new Repository(Path))
+                foreach (var tag in repo.Tags)
                 {
-                    foreach (var tag in repo.Tags)
-                    {
-                        observer.OnNext(new Tag(tag.FriendlyName));
-                    }
+                    observer.OnNext(new Tag(tag.FriendlyName));
                 }
                 observer.OnCompleted();
 
@@ -57,14 +51,11 @@ namespace Encommit.Models
 
         public IObservable<HistoryItem> GetHistoryReactive()
         {
-            return Observable.Create<HistoryItem>(observer =>
+            return WithRepository<HistoryItem>((repo, observer) =>
             {
-                using (var repo = new Repository(Path))
+                foreach (var commit in repo.Commits.Take(10))
                 {
-                    foreach (var commit in repo.Commits.Take(10))
-                    {
-                        observer.OnNext(new HistoryItem(commit.Id, commit.MessageShort));
-                    }
+                    observer.OnNext(new HistoryItem(commit.Id, commit.MessageShort));
                 }
                 observer.OnCompleted();
 
@@ -114,6 +105,18 @@ namespace Encommit.Models
                 observer.OnCompleted();
 
                 return Disposable.Empty;
+            });
+        }
+
+        private IObservable<T> WithRepository<T>(
+            Func<Repository, IObserver<T>, IDisposable> subscribe)
+        {
+            return Observable.Create<T>(observer =>
+            {
+                using (var repo = new Repository(Path))
+                {
+                    return subscribe(repo, observer);
+                }
             });
         }
 
