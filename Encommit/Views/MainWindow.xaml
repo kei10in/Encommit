@@ -48,28 +48,22 @@
           <Expander Header="Branches" IsExpanded="True" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition">
             <Grid>
               <TreeView ItemsSource="{Binding LocalBranches.References.Children, Mode=OneWay}">
-                <TreeView.Resources>
-                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
-                    <TextBlock Text="{Binding Name}"/>
+                <TreeView.ItemTemplate>
+                  <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Value.Name, Mode=OneWay}"/>
                   </HierarchicalDataTemplate>
-                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}"/>
-                  </HierarchicalDataTemplate>
-                </TreeView.Resources>
+                </TreeView.ItemTemplate>
               </TreeView>
             </Grid>
           </Expander>
           <Expander Header="Tags" IsExpanded="True" d:LayoutOverrides="LeftPosition, RightPosition">
             <Grid>
               <TreeView ItemsSource="{Binding Tags.References.Children, Mode=OneWay}">
-                <TreeView.Resources>
-                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceViewModel}">
-                    <TextBlock Text="{Binding Name}"/>
+                <TreeView.ItemTemplate>
+                  <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Value.Name, Mode=OneWay}"/>
                   </HierarchicalDataTemplate>
-                  <HierarchicalDataTemplate DataType="{x:Type ViewModels:ReferenceGroupViewModel}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}"/>
-                  </HierarchicalDataTemplate>
-                </TreeView.Resources>
+                </TreeView.ItemTemplate>
               </TreeView>
             </Grid>
           </Expander>

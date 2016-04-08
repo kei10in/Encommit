@@ -84,6 +84,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ObservableTree.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\CommitAbstract.cs" />
     <Compile Include="Models\GitRepository.cs" />

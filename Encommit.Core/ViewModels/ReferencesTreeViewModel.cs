@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Encommit.Collections;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Encommit.ViewModels
 {
     public class ReferencesTreeViewModel
     {
-        public ReferenceGroupViewModel References { get; } = new ReferenceGroupViewModel("", null);
+        public ObservableTree<IReferenceEntryViewModel> References { get; }
+            = new ObservableTree<IReferenceEntryViewModel>();
 
         public void Add(string branchName)
         {
@@ -21,108 +23,71 @@ namespace Encommit.ViewModels
             char[] delim = { '/' };
             var names = branchName.Split(delim);
 
-            Add(names, References);
+            Add(names, References, branchName);
         }
 
-        private void Add(IEnumerable<string> names, ReferenceGroupViewModel parent)
+        private void Add(
+            IEnumerable<string> names,
+            ObservableTree<IReferenceEntryViewModel> parent,
+            string branchName
+            )
         {
             var name = names.First();
             var rest = names.Skip(1);
 
-            var node = parent.Children.FirstOrDefault(x => x.Name == name);
-
+            var node = parent.Children.FirstOrDefault(x => x.Value.Name == name);
             bool hasRest = rest.Any();
-            bool hasNode = node != null;
 
-            if (hasRest && hasNode)
+            if (node == null && hasRest)
             {
-                var group = node as ReferenceGroupViewModel;
-                if (group == null)
-                {
-                    throw new InvalidOperationException($"{node.FullName} is already exist.");
-                }
-                Add(rest, group);
+                var group = new ReferenceGroupViewModel(name);
+                node = new ObservableTree<IReferenceEntryViewModel>(group);
+                parent.Add(node);
             }
-            else if (hasRest && !hasNode)
+
+            if (node == null)
             {
-                var group = new ReferenceGroupViewModel(name, parent);
-                Add(rest, group);
-                parent.Children.Add(group);
+                parent.Add(new ReferenceViewModel(branchName));
             }
-            else if (!hasRest && hasNode)
+            else if (node.Value is ReferenceGroupViewModel && hasRest)
             {
-                throw new InvalidOperationException($"{node.FullName} is slready exist.");
+                Add(rest, node, branchName);
             }
-            else if (!hasRest && !hasNode)
+            else
             {
-                var branch = new ReferenceViewModel(name, parent);
-                parent.Children.Add(branch);
+                throw new InvalidOperationException($"{branchName} is already exist.");
             }
         }
     }
 
     public interface IReferenceEntryViewModel
     {
-        string FullName { get; }
         string Name { get; }
     }
 
-    public class ReferenceEntryViewModel : IReferenceEntryViewModel
+    public class ReferenceViewModel : IReferenceEntryViewModel
     {
-        public ReferenceEntryViewModel(string name)
+        public ReferenceViewModel(string name)
         {
-            Name = name;
+            FullName = name;
+
+            char[] delim = { '/' };
+            var names = name.Split(delim);
+            Name = names.LastOrDefault();
         }
 
-        public ReferenceEntryViewModel(string name, ReferenceGroupViewModel parent)
+        public string FullName { get; }
+
+        public string Name { get; }
+    }
+
+    public class ReferenceGroupViewModel : IReferenceEntryViewModel
+    {
+        public ReferenceGroupViewModel(string name)
         {
             Name = name;
-            Parent = parent;
-        }
-
-        public string FullName
-        {
-            get
-            {
-                if (Parent == null)
-                {
-                    return Name;
-                }
-                else
-                {
-                    return string.IsNullOrWhiteSpace(Parent.FullName)
-                        ? Name : Parent.FullName + "/" + Name;
-                }
-            }
         }
 
         public string Name { get; }
-
-        protected ReferenceGroupViewModel Parent { get; }
-    }
-
-    public class ReferenceViewModel : ReferenceEntryViewModel
-    {
-        public ReferenceViewModel(string name)
-            : base(name)
-        { }
-
-        public ReferenceViewModel(string name, ReferenceGroupViewModel parent)
-            : base(name, parent)
-        { }
-    }
-
-    public class ReferenceGroupViewModel : ReferenceEntryViewModel
-    {
-        public ReferenceGroupViewModel(string name)
-            : base(name)
-        { }
-
-        public ReferenceGroupViewModel(string name, ReferenceGroupViewModel parent)
-            : base(name, parent)
-        { }
-
-        public ObservableCollection<IReferenceEntryViewModel> Children { get; }
-            = new ObservableCollection<IReferenceEntryViewModel>();
     }
 }
