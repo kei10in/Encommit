@@ -67,6 +67,17 @@
               </TreeView>
             </Grid>
           </Expander>
+          <Expander Header="Remotes" IsExpanded="True" d:LayoutOverrides="LeftPosition, RightPosition">
+            <Grid>
+              <TreeView ItemsSource="{Binding Remotes.Roots.Children, Mode=OneWay}">
+                <TreeView.ItemTemplate>
+                   <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Value.DisplayName, Mode=OneWay}"/>
+                  </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+            </Grid>
+          </Expander>
         </StackPanel>
       </Grid>
       <GridSplitter Grid.Column="1" Width="7" BorderThickness="3,0" Margin="-3,0" BorderBrush="Transparent" HorizontalAlignment="Center" />

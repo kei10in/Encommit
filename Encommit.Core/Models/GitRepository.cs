@@ -49,6 +49,22 @@ namespace Encommit.Models
             });
         }
 
+        public IObservable<RemoteBranch> GetRemoteBranchesReactive()
+        {
+            return WithRepository<RemoteBranch>((repo, observer) =>
+            {
+                foreach (var branch in repo.Branches)
+                {
+                    if (!branch.IsRemote) continue;
+
+                    observer.OnNext(new RemoteBranch(branch.FriendlyName, branch.Remote.Name));
+                }
+                observer.OnCompleted();
+
+                return Disposable.Empty;
+            });
+        }
+
         public IObservable<HistoryItem> GetHistoryReactive()
         {
             return WithRepository<HistoryItem>((repo, observer) =>

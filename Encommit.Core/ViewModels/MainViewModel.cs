@@ -37,6 +37,11 @@ namespace Encommit.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(tag => Tags.Add(tag.Name));
 
+            repositoryLoaded
+                .SelectMany(repository => repository.GetRemoteBranchesReactive())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(branch => Remotes.Add(branch));
+
             this.WhenAnyValue(x => x.SelectedHistoryItem)
                 .Subscribe(selected => LoadCommitAbstract(selected));
 
@@ -74,6 +79,8 @@ namespace Encommit.ViewModels
             get { return _tags; }
             set { this.RaiseAndSetIfChanged(ref _tags, value); }
         }
+
+        public RemoteBranchViewModel Remotes { get; } = new RemoteBranchViewModel();
 
         private ObservableCollection<HistoryItem> _history = new ObservableCollection<HistoryItem>();
         public ObservableCollection<HistoryItem> History
