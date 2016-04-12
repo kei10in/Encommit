@@ -97,6 +97,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReactiveProperty.cs" />
     <Compile Include="ViewModels\RemoteBranchesViewModel.cs" />
+    <Compile Include="ViewModels\RepositoryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

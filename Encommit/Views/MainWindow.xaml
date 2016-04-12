@@ -24,7 +24,7 @@
         <MenuItem Header="Open...">
           <is:Interaction.Triggers>
             <is:EventTrigger EventName="Click">
-              <Interactivity:FileDialogAction IsFolderPicker="True" FilePath="{Binding RepositoryPath, Mode=TwoWay}" />
+              <Interactivity:FileDialogAction IsFolderPicker="True" FilePath="{Binding WorkingRepository.RepositoryPath, Mode=TwoWay}" />
             </is:EventTrigger>
           </is:Interaction.Triggers>
         </MenuItem>
@@ -32,6 +32,6 @@
         <MenuItem Header="Exit"/>
       </MenuItem>
     </Menu>
-    <local:RepositoryView Grid.Row="1"/>
+    <local:RepositoryView Grid.Row="1" DataContext="{Binding WorkingRepository, Mode=OneWay}"/>
   </Grid>
 </Window>
