@@ -92,6 +92,9 @@
     <Compile Include="Models\RemoteBranch.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\DashboardViewModel.cs" />
+    <Compile Include="ViewModels\ITabContentViewModel.cs" />
+    <Compile Include="ViewModels\TabItemViewModel.cs" />
     <Compile Include="ViewModels\ReferencesTreeViewModel.cs" />
     <Compile Include="ViewModels\CommitAbstractViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

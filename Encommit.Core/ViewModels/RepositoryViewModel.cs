@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Encommit.ViewModels
 {
-    public class RepositoryViewModel : ReactiveObject
+    public class RepositoryViewModel : ReactiveObject, ITabContentViewModel
     {
         public RepositoryViewModel()
         {
@@ -50,6 +50,15 @@ namespace Encommit.ViewModels
 
             this.WhenAnyValue(x => x.SelectedChange)
                 .Subscribe(selected => LoadFilePatch(selected));
+        }
+
+        public string Header
+        {
+            get
+            {
+                if (RepositoryPath == null) return string.Empty;
+                return RepositoryPath.Split().Last();
+            }
         }
 
         private string _repositoryPath;

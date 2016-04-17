@@ -15,9 +15,37 @@ namespace Encommit.ViewModels
     {
         public MainViewModel()
         {
-            WorkingRepository = new RepositoryViewModel();
+            _tabs = new ReactiveList<TabItemViewModel>();
+
+            AddTab = ReactiveCommand.Create();
+            AddTab.ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(_ => AddImpl());
         }
 
-        public RepositoryViewModel WorkingRepository { get; }
+        private ReactiveList<TabItemViewModel> _tabs;
+        public IReadOnlyReactiveCollection<TabItemViewModel> Tabs
+        {
+            get { return _tabs; }
+        }
+
+        public ReactiveCommand<object> AddTab { get; }
+
+        void AddImpl()
+        {
+            var vm = new DashboardViewModel();
+            var tab = new TabItemViewModel();
+            tab.Content = vm;
+            _tabs.Add(tab);
+
+            vm.WhenAnyValue(x => x.Path)
+                .Skip(1)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(path =>
+                {
+                    var rvm = new RepositoryViewModel();
+                    rvm.RepositoryPath = path;
+                    tab.Content = rvm;
+                });
+        }
     }
 }
