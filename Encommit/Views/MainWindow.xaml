@@ -96,11 +96,6 @@
     <Menu VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment">
       <MenuItem Header="File">
         <MenuItem Header="Open...">
-          <is:Interaction.Triggers>
-            <is:EventTrigger EventName="Click">
-              <Interactivity:FileDialogAction IsFolderPicker="True" FilePath="{Binding WorkingRepository.RepositoryPath, Mode=TwoWay}" />
-            </is:EventTrigger>
-          </is:Interaction.Triggers>
         </MenuItem>
         <Separator/>
         <MenuItem Header="Exit"/>
