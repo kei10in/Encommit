@@ -28,6 +28,13 @@ namespace Encommit.ViewModels
             get { return _tabs; }
         }
 
+        private TabItemViewModel _selectedTab;
+        public TabItemViewModel SelectedTab
+        {
+            get { return _selectedTab; }
+            set { this.RaiseAndSetIfChanged(ref _selectedTab, value); }
+        }
+
         public ReactiveCommand<object> AddTab { get; }
 
         void AddImpl()
@@ -36,6 +43,7 @@ namespace Encommit.ViewModels
             var tab = new TabItemViewModel();
             tab.Content = vm;
             _tabs.Add(tab);
+            SelectedTab = tab;
 
             vm.WhenAnyValue(x => x.Path)
                 .Skip(1)

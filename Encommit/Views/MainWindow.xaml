@@ -101,7 +101,7 @@
         <MenuItem Header="Exit"/>
       </MenuItem>
     </Menu>
-    <TabControl Grid.Row="1" ItemsSource="{Binding Tabs}" Style="{DynamicResource TabControlStyle1}">
+    <TabControl Grid.Row="1" ItemsSource="{Binding Tabs}" Style="{DynamicResource TabControlStyle1}" SelectedItem="{Binding SelectedTab}">
       <TabControl.ItemTemplate>
         <DataTemplate>
           <Grid>
