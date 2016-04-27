@@ -85,9 +85,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\ObservableTree.cs" />
+    <Compile Include="Extensions\CollectionExtension.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\CommitAbstract.cs" />
     <Compile Include="Models\GitRepository.cs" />
+    <Compile Include="Models\HistoryGraph\BranchFromVertexGraphRenderer.cs" />
+    <Compile Include="Models\HistoryGraph\HistoryEdge.cs" />
+    <Compile Include="Models\HistoryGraph\HistoryGraphItem.cs" />
+    <Compile Include="Models\HistoryGraph\HistoryVertex.cs" />
+    <Compile Include="Models\HistoryGraph\HistoryCommit.cs" />
     <Compile Include="Models\HistoryItem.cs" />
     <Compile Include="Models\RemoteBranch.cs" />
     <Compile Include="Models\Tag.cs" />
