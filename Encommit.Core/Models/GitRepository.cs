@@ -71,7 +71,7 @@ namespace Encommit.Models
             {
                 foreach (var commit in repo.Commits.Take(10))
                 {
-                    observer.OnNext(new HistoryItem(commit.Id, commit.MessageShort));
+                    observer.OnNext(new HistoryItem(commit.Id, commit.Parents.Select(x => x.Id) , commit.MessageShort));
                 }
                 observer.OnCompleted();
 

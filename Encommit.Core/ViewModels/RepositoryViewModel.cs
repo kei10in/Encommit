@@ -1,4 +1,5 @@
 ﻿using Encommit.Models;
+using Encommit.Models.HistoryGraph;
 using ICSharpCode.AvalonEdit.Document;
 using ReactiveUI;
 using System;
@@ -24,8 +25,14 @@ namespace Encommit.ViewModels
 
             repositoryLoaded
                 .SelectMany(repository => repository.GetHistoryReactive())
+                .Scan(
+                    HistoryItemViewModel.Empty,
+                    (HistoryItemViewModel vm, HistoryItem commit) =>
+                    {
+                        return vm.Next(commit);
+                    })
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(historyItem => History.Add(historyItem));
+                .Subscribe(graph => History.Add(graph));
 
             repositoryLoaded
                 .SelectMany(repository => repository.GetLocalBranchesReactive())
@@ -43,10 +50,12 @@ namespace Encommit.ViewModels
                 .Subscribe(branch => Remotes.Add(branch));
 
             this.WhenAnyValue(x => x.SelectedHistoryItem)
-                .Subscribe(selected => LoadCommitAbstract(selected));
+                .Where(x => x != null)
+                .Subscribe(selected => LoadCommitAbstract(selected.Commit));
 
             this.WhenAnyValue(x => x.SelectedHistoryItem)
-                .Subscribe(selected => LoadTreeChanges(selected));
+                .Where(x => x != null)
+                .Subscribe(selected => LoadTreeChanges(selected.Commit));
 
             this.WhenAnyValue(x => x.SelectedChange)
                 .Subscribe(selected => LoadFilePatch(selected));
@@ -91,15 +100,15 @@ namespace Encommit.ViewModels
 
         public RemoteBranchViewModel Remotes { get; } = new RemoteBranchViewModel();
 
-        private ObservableCollection<HistoryItem> _history = new ObservableCollection<HistoryItem>();
-        public ObservableCollection<HistoryItem> History
+        private ObservableCollection<HistoryItemViewModel> _history = new ObservableCollection<HistoryItemViewModel>();
+        public ObservableCollection<HistoryItemViewModel> History
         {
             get { return _history; }
             set { this.RaiseAndSetIfChanged(ref _history, value); }
         }
 
-        private HistoryItem _selectedHistoryItem;
-        public HistoryItem SelectedHistoryItem
+        private HistoryItemViewModel _selectedHistoryItem;
+        public HistoryItemViewModel SelectedHistoryItem
         {
             get { return _selectedHistoryItem; }
             set { this.RaiseAndSetIfChanged(ref _selectedHistoryItem, value); }
@@ -159,7 +168,7 @@ namespace Encommit.ViewModels
         private void LoadFilePatch(string filepath)
         {
             if (filepath == null) return;
-            WorkingRespository.GetPatchReactive(SelectedHistoryItem.Id, filepath)
+            WorkingRespository.GetPatchReactive(SelectedHistoryItem.Commit.Id, filepath)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x => FilePatch = new TextDocument(x.Content));
         }

@@ -10,7 +10,7 @@
   <UserControl.Resources>
     <DataTemplate x:Key="HistoryItemTemplate">
       <Grid>
-        <TextBlock TextWrapping="Wrap" Text="{Binding MessageShort}"/>
+        <TextBlock TextWrapping="Wrap" Text="{Binding Commit.MessageShort}"/>
       </Grid>
     </DataTemplate>
   </UserControl.Resources>
