@@ -4,14 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Encommit"
+             xmlns:v="clr-namespace:Encommit.Views"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              mc:Ignorable="d" 
              d:DesignHeight="911.04" d:DesignWidth="1592">
   <UserControl.Resources>
     <DataTemplate x:Key="HistoryItemTemplate">
-      <Grid>
-        <TextBlock TextWrapping="Wrap" Text="{Binding Commit.MessageShort}"/>
-      </Grid>
+      <v:HistoryGraphItemView/>
     </DataTemplate>
   </UserControl.Resources>
   <Grid d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition">
